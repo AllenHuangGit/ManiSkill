@@ -20,6 +20,7 @@ from mani_skill.agents.robots.fetch import (
     FETCH_WHEELS_COLLISION_BIT,
     FETCH_BASE_COLLISION_BIT,
 )
+from mani_skill.agents.robots.panda import Panda
 from mani_skill.utils.scene_builder import SceneBuilder
 from mani_skill.utils.scene_builder.registration import register_scene_builder
 from mani_skill.utils.structs import Actor, Articulation
@@ -131,7 +132,7 @@ class ReplicaCADSceneBuilder(SceneBuilder):
             for obj_num, obj_meta in enumerate(build_config_json["object_instances"]):
 
                 # Again, for any dataset you will have to figure out how they reference object files
-                # Note that ASSET_DIR will always refer to the ~/.maniskill/data folder or whatever MS_ASSET_DIR is set to
+                # Note that ASSET_DIR will always refer to the ~/.ms_data folder or whatever MS_ASSET_DIR is set to
                 obj_cfg_path = osp.join(
                     ASSET_DIR,
                     "scene_datasets/replica_cad_dataset/configs/objects",
@@ -277,6 +278,12 @@ class ReplicaCADSceneBuilder(SceneBuilder):
 
             # For the purposes of physical simulation, we disable collisions between the Fetch robot and the scene background
             self.disable_fetch_move_collisions(self.bg)
+        elif self.env.robot_uids == "panda":
+            agent: Panda = self.env.agent
+            rest_keyframe = agent.keyframes["rest"]
+            agent.reset(rest_keyframe.qpos)
+
+            agent.robot.set_pose(sapien.Pose([-1, 0, 0.02]))
         else:
             raise NotImplementedError(self.env.robot_uids)
 
