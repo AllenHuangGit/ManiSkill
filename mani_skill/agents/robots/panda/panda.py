@@ -37,6 +37,10 @@ class Panda(BaseAgent):
             qpos=np.array(
                 [
                     0.0,
+                    0.0,
+                    0.0,
+                    0.0, # add four dofs for the moveable base
+                    0.0,
                     np.pi / 8,
                     0,
                     -np.pi * 5 / 8,

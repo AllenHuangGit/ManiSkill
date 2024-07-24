@@ -4,6 +4,58 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="panda">
+  <!-- Fixed base link -->
+  <link name="fixed_base">
+  </link>
+
+  <!-- Prismatic joint for X-axis movement -->
+  <joint name="base_prismatic_x" type="prismatic">
+    <parent link="fixed_base"/>
+    <child link="base_slide_x"/>
+    <origin xyz="0 0 0.01" rpy="0 0 0"/> <!-- Slightly above the fixed base for visualization -->
+    <axis xyz="1 0 0"/>
+    <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+  </joint>
+
+  <!-- Intermediate link for X-axis slide -->
+  <link name="base_slide_x">
+  </link>
+
+  <!-- Prismatic joint for Y-axis movement -->
+  <joint name="base_prismatic_y" type="prismatic">
+    <parent link="base_slide_x"/>
+    <child link="base_slide_y"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+  </joint>
+
+  <!-- Intermediate link for Y-axis slide -->
+  <link name="base_slide_y">
+  </link>
+
+  <!-- Prismatic joint for Z-axis height adjustment -->
+  <joint name="base_prismatic_z" type="prismatic">
+    <parent link="base_slide_y"/>
+    <child link="base_slide_z"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/> <!-- At the end of Y movement for visualization -->
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="2" effort="1000" velocity="1"/> <!-- Limits for height adjustment -->
+  </joint>
+
+  <!-- Intermediate link for Z-axis slide -->
+  <link name="base_slide_z">
+  </link>
+
+  <!-- Revolute joint for Z-axis rotation -->
+  <joint name="base_revolute_z" type="revolute">
+    <parent link="base_slide_z"/>
+    <child link="panda_link0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="1000" velocity="1"/>
+  </joint>
+  
   <link name="panda_link0">
     <visual>
       <geometry>
