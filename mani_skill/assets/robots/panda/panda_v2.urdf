@@ -400,4 +400,42 @@
     <mimic joint="panda_finger_joint1"/>
     <dynamics damping="0.3"/>
   </joint>
+
+    <!-- Camera mount -->
+    <joint name="realsense_mount_joint" type="revolute">
+        <origin rpy="0 -1.57079632679489 3.1415926" xyz="0 0 1"/> <!-- Adjusted to be above link0 -->
+        <parent link="panda_link0"/>
+        <child link="camera_base_link"/>
+        <axis xyz="0 1 0"/> <!-- Allows rotation around the X-axis -->
+        <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+    </joint>
+    <link name="camera_base_link"/>
+
+    <joint name="camera_link_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0.02 0.0115"/>
+        <parent link="camera_base_link"/>
+        <child link="camera_link"/>
+    </joint>
+
+    <link name="camera_link">
+        <visual>
+            <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0 -0.02 0"/>
+            <geometry>
+                <mesh filename="realsense2_description/meshes/d415.stl"/>
+            </geometry>
+            <material name="aluminum"/>
+        </visual>
+        <!-- <collision>
+            <origin rpy="0 0 0" xyz="-0.0125 -0.02 0"/>
+            <geometry>
+                <box size="0.02005 0.099 0.023"/>
+            </geometry>
+        </collision> -->
+        <!-- <inertial>
+            <mass value="0.564"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+        </inertial> -->
+    </link>
+
 </robot>

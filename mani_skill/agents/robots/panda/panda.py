@@ -13,6 +13,8 @@ from mani_skill.agents.registration import register_agent
 from mani_skill.utils import common, sapien_utils
 from mani_skill.utils.structs.actor import Actor
 
+from mani_skill.sensors.camera import CameraConfig
+
 
 @register_agent()
 class Panda(BaseAgent):
@@ -39,7 +41,8 @@ class Panda(BaseAgent):
                     0.0,
                     0.0,
                     0.0,
-                    0.0, # add four dofs for the moveable base
+                    0.0,
+                    0.0, # add four dofs for the moveable base and one for the camera
                     0.0,
                     np.pi / 8,
                     0,
@@ -275,16 +278,17 @@ class Panda(BaseAgent):
         T[:3, 3] = center
         return sapien.Pose(T)
 
-    # sensor_configs = [
-    #     CameraConfig(
-    #         uid="hand_camera",
-    #         p=[0.0464982, -0.0200011, 0.0360011],
-    #         q=[0, 0.70710678, 0, 0.70710678],
-    #         width=128,
-    #         height=128,
-    #         fov=1.57,
-    #         near=0.01,
-    #         far=100,
-    #         entity_uid="panda_hand",
-    #     )
-    # ]
+    @property
+    def _sensor_configs(self):
+        return [
+            CameraConfig(
+                uid="panda_camera",
+                pose=sapien.Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
+                width=512,
+                height=512,
+                fov=np.pi / 2,
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link"],
+            )
+        ]

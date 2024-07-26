@@ -63,6 +63,10 @@ class TableSceneBuilder(SceneBuilder):
             qpos = np.array(
                 [
                     0.0,
+                    0.0,
+                    0.0,
+                    0.0, # add four degrees of freedom for the movable base
+                    0.0,
                     np.pi / 8,
                     0,
                     -np.pi * 5 / 8,
