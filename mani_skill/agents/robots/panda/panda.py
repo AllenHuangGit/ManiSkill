@@ -38,20 +38,21 @@ class Panda(BaseAgent):
         rest=Keyframe(
             qpos=np.array(
                 [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0, # add four dofs for the moveable base and one for the camera
-                    0.0,
-                    np.pi / 8,
-                    0,
-                    -np.pi * 5 / 8,
-                    0,
-                    np.pi * 3 / 4,
-                    np.pi / 4,
-                    0.04,
-                    0.04,
+                    0.0,        #panda_base_prismatic_x
+                    0.0,        #panda_base_prismatic_y
+                    0.0,        #panda_base_prismatic_z
+                    0.0,        #panda_base_revolute_z
+                    0.0,        #panda_joint1
+                    1.0,        #camera_joint0
+                    np.pi / 8,  #panda_joint2
+                    0.0,        #camera_joint1
+                    0,          #panda_joint3
+                    -np.pi * 5 / 8, #panda_joint4
+                    0,          #panda_joint5
+                    np.pi * 3 / 4, #panda_joint6
+                    np.pi / 4,  #panda_joint7
+                    0.04,    #panda_finger_joint1
+                    0.04,    #panda_finger_joint2
                 ]
             ),
             pose=sapien.Pose(),

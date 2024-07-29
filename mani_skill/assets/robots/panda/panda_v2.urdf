@@ -14,7 +14,8 @@
     <child link="base_slide_x"/>
     <origin xyz="0 0 0.01" rpy="0 0 0"/> <!-- Slightly above the fixed base for visualization -->
     <axis xyz="1 0 0"/>
-    <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+    <limit lower="-10" upper="10" effort="1000" velocity="0"/>
+    <dynamics damping="1000" friction="1000"/>
   </joint>
 
   <!-- Intermediate link for X-axis slide -->
@@ -27,7 +28,8 @@
     <child link="base_slide_y"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+    <limit lower="-10" upper="10" effort="1000" velocity="0"/>
+    <dynamics damping="1000" friction="1000"/>
   </joint>
 
   <!-- Intermediate link for Y-axis slide -->
@@ -40,7 +42,8 @@
     <child link="base_slide_z"/>
     <origin xyz="0 0 0" rpy="0 0 0"/> <!-- At the end of Y movement for visualization -->
     <axis xyz="0 0 1"/>
-    <limit lower="0" upper="2" effort="1000" velocity="1"/> <!-- Limits for height adjustment -->
+    <limit lower="0" upper="5" effort="1000" velocity="0"/> <!-- Limits for height adjustment -->
+    <dynamics damping="1000" friction="1000"/>
   </joint>
 
   <!-- Intermediate link for Z-axis slide -->
@@ -53,7 +56,8 @@
     <child link="panda_link0"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit lower="-3.14159" upper="3.14159" effort="1000" velocity="1"/>
+    <limit lower="-10" upper="10" effort="1000" velocity="0"/>
+    <dynamics damping="1000" friction="1000"/>
   </joint>
   
   <link name="panda_link0">
@@ -402,18 +406,30 @@
   </joint>
 
     <!-- Camera mount -->
-    <joint name="realsense_mount_joint" type="revolute">
-        <origin rpy="0 -1.57079632679489 3.1415926" xyz="0 0 1"/> <!-- Adjusted to be above link0 -->
+    <joint name="camera_link_joint0" type="prismatic">
+        <origin rpy="0 0 0" xyz="0 0 0"/>  <!-- Adjusted to be above link0 -->
         <parent link="panda_link0"/>
-        <child link="camera_base_link"/>
-        <axis xyz="0 1 0"/> <!-- Allows rotation around the X-axis -->
-        <limit lower="-10" upper="10" effort="1000" velocity="2"/>
+        <child link="camera_base_link0"/>
+        <axis xyz="0 0 1"/> <!-- Allows movement along the Z-axis -->
+        <limit lower="0" upper="5" effort="1000" velocity="0"/>
+        <dynamics damping="1000" friction="1000"/>
     </joint>
-    <link name="camera_base_link"/>
+    <link name="camera_base_link0"/>
+
+
+    <joint name="camera_link_joint1" type="revolute">
+        <origin rpy="0 -1.57079632679489 3.1415926" xyz="0 0 0"/> 
+        <parent link="camera_base_link0"/>
+        <child link="camera_base_link1"/>
+        <axis xyz="0 1 0"/> <!-- Allows rotation around the X-axis -->
+        <limit lower="-10" upper="10" effort="1000" velocity="0"/>
+        <dynamics damping="1000" friction="1000"/>
+    </joint>
+    <link name="camera_base_link1"/>
 
     <joint name="camera_link_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0 0.02 0.0115"/>
-        <parent link="camera_base_link"/>
+        <parent link="camera_base_link1"/>
         <child link="camera_link"/>
     </joint>
 
