@@ -4,6 +4,7 @@ from typing import Dict, Tuple
 import numpy as np
 import sapien
 import sapien.physx as physx
+from sapien.core import Pose
 import torch
 
 from mani_skill import PACKAGE_ASSET_DIR
@@ -283,13 +284,53 @@ class Panda(BaseAgent):
     def _sensor_configs(self):
         return [
             CameraConfig(
-                uid="panda_camera",
-                pose=sapien.Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
+                uid="panda_camera_front",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
                 width=512,
                 height=512,
-                fov=np.pi / 2,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
                 near=0.01,
                 far=100,
                 mount=self.robot.links_map["camera_link"],
-            )
+            ),
+            CameraConfig(
+                uid="panda_camera_back",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_back"],
+            ),
+            CameraConfig(
+                uid="panda_camera_left",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_left"],
+            ),
+            CameraConfig(
+                uid="panda_camera_right",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_right"],
+            ),
+            CameraConfig(
+                uid="panda_camera_top",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_top"],
+            ),
         ]

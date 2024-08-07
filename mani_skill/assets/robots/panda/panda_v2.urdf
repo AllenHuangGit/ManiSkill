@@ -417,8 +417,8 @@
     <link name="camera_base_link0"/>
 
 
-    <joint name="camera_link_joint1" type="revolute">
-        <origin rpy="0 -1.57079632679489 3.1415926" xyz="0 0 0"/> 
+    <joint name="camera_link_joint" type="revolute">
+        <origin rpy="0 0.45 3.14159265359" xyz="0 0 0"/> 
         <parent link="camera_base_link0"/>
         <child link="camera_base_link1"/>
         <axis xyz="0 1 0"/> <!-- Allows rotation around the X-axis -->
@@ -427,20 +427,22 @@
     </joint>
     <link name="camera_base_link1"/>
 
-    <joint name="camera_link_joint" type="fixed">
+    <joint name="camera_link_joint1" type="fixed">
         <origin rpy="0 0 0" xyz="0 0.02 0.0115"/>
         <parent link="camera_base_link1"/>
         <child link="camera_link"/>
     </joint>
 
-    <link name="camera_link">
-        <visual>
+    <link name="camera_link"/>  
+
+    <!-- <link name="camera_link"> -->
+        <!-- <visual>
             <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0 -0.02 0"/>
             <geometry>
                 <mesh filename="realsense2_description/meshes/d415.stl"/>
             </geometry>
             <material name="aluminum"/>
-        </visual>
+        </visual> -->
         <!-- <collision>
             <origin rpy="0 0 0" xyz="-0.0125 -0.02 0"/>
             <geometry>
@@ -452,6 +454,34 @@
             <origin xyz="0 0 0"/>
             <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
         </inertial> -->
-    </link>
+    <!-- </link> -->
+
+    <joint name="camera_link_left_joint" type="fixed">
+        <origin rpy="0 0.45 -1.5707963267948966" xyz="0 0.02 0.0115"/>
+        <parent link="camera_base_link0"/>
+        <child link="camera_link_left"/>
+    </joint>
+    <link name="camera_link_left"/>
+
+    <joint name="camera_link_right_joint" type="fixed">
+        <origin rpy="0 0.45 1.5707963267948966" xyz="0 -0.02 0.0115"/>
+        <parent link="camera_base_link0"/>
+        <child link="camera_link_right"/>
+    </joint>
+    <link name="camera_link_right"/>
+
+    <joint name="camera_link_back_joint" type="fixed">
+        <origin rpy="0 0.45 0" xyz="0 -0.02 -0.0115"/>
+        <parent link="camera_base_link0"/>
+        <child link="camera_link_back"/>
+    </joint>
+    <link name="camera_link_back"/>
+
+    <joint name="camera_link_top_joint" type="fixed">
+        <origin rpy="0 -1.5707963267948966 0" xyz="0 -0.02 -0.0115"/>
+        <parent link="camera_base_link0"/>
+        <child link="camera_link_top"/>
+    </joint>
+    <link name="camera_link_top"/>
 
 </robot>
