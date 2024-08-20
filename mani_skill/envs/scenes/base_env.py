@@ -137,9 +137,7 @@ class SceneManipulationEnv(BaseEnv):
 
     @property
     def _default_sensor_configs(self):
-        if self.robot_uids == "fetch":
-            return []
-        if self.robot_uids == "panda":
+        if self.robot_uids == "fetch" or "panda" or "panda_v2":
             return []
 
         pose = sapien_utils.look_at([0.3, 0, 0.6], [-0.1, 0, 0.1])
@@ -171,7 +169,7 @@ class SceneManipulationEnv(BaseEnv):
             )
             return [room_camera_config, robot_camera_config]
 
-        if self.robot_uids == "panda":
+        if self.robot_uids == "panda" or "panda_v2":
             pose = sapien_utils.look_at([0.4, 0.4, 0.8], [0.0, 0.0, 0.4])
         else:
             pose = sapien_utils.look_at([0, 10, -3], [0, 0, 0])
