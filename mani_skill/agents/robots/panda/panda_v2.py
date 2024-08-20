@@ -1,8 +1,10 @@
 from copy import deepcopy
+from typing import Dict, Tuple
 
 import numpy as np
 import sapien
 import sapien.physx as physx
+from sapien.core import Pose
 import torch
 
 from mani_skill import PACKAGE_ASSET_DIR
@@ -12,11 +14,13 @@ from mani_skill.agents.registration import register_agent
 from mani_skill.utils import common, sapien_utils
 from mani_skill.utils.structs.actor import Actor
 
+from mani_skill.sensors.camera import CameraConfig
+
 
 @register_agent()
-class Panda(BaseAgent):
-    uid = "panda"
-    urdf_path = f"{PACKAGE_ASSET_DIR}/robots/panda/panda_v1.urdf"
+class PandaV2(BaseAgent):
+    uid = "panda_v2"
+    urdf_path = f"{PACKAGE_ASSET_DIR}/robots/panda/panda_v2.urdf"
     urdf_config = dict(
         _materials=dict(
             gripper=dict(static_friction=2.0, dynamic_friction=2.0, restitution=0.0)
@@ -35,15 +39,21 @@ class Panda(BaseAgent):
         rest=Keyframe(
             qpos=np.array(
                 [
-                    0.0,
-                    np.pi / 8,
-                    0,
-                    -np.pi * 5 / 8,
-                    0,
-                    np.pi * 3 / 4,
-                    np.pi / 4,
-                    0.04,
-                    0.04,
+                    0.0,        #panda_base_prismatic_x
+                    0.0,        #panda_base_prismatic_y
+                    0.0,        #panda_base_prismatic_z
+                    0.0,        #panda_base_revolute_z
+                    0.0,        #panda_joint1
+                    1.0,        #camera_joint0
+                    np.pi / 8,  #panda_joint2
+                    0.0,        #camera_joint1
+                    0,          #panda_joint3
+                    -np.pi * 5 / 8, #panda_joint4
+                    0,          #panda_joint5
+                    np.pi * 3 / 4, #panda_joint6
+                    np.pi / 4,  #panda_joint7
+                    0.04,    #panda_finger_joint1
+                    0.04,    #panda_finger_joint2
                 ]
             ),
             pose=sapien.Pose(),
@@ -220,6 +230,10 @@ class Panda(BaseAgent):
             self.robot.get_links(), self.ee_link_name
         )
 
+        self.queries: Dict[
+            str, Tuple[physx.PhysxGpuContactPairImpulseQuery, Tuple[int]]
+        ] = dict()
+
     def is_grasping(self, object: Actor, min_force=0.5, max_angle=85):
         """Check if the robot is grasping an object
 
@@ -266,16 +280,57 @@ class Panda(BaseAgent):
         T[:3, 3] = center
         return sapien.Pose(T)
 
-    # sensor_configs = [
-    #     CameraConfig(
-    #         uid="hand_camera",
-    #         p=[0.0464982, -0.0200011, 0.0360011],
-    #         q=[0, 0.70710678, 0, 0.70710678],
-    #         width=128,
-    #         height=128,
-    #         fov=1.57,
-    #         near=0.01,
-    #         far=100,
-    #         entity_uid="panda_hand",
-    #     )
-    # ]
+    @property
+    def _sensor_configs(self):
+        return [
+            CameraConfig(
+                uid="panda_camera_front",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link"],
+            ),
+            CameraConfig(
+                uid="panda_camera_back",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_back"],
+            ),
+            CameraConfig(
+                uid="panda_camera_left",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_left"],
+            ),
+            CameraConfig(
+                uid="panda_camera_right",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_right"],
+            ),
+            CameraConfig(
+                uid="panda_camera_top",
+                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,  # 120 degrees FOV
+                near=0.01,
+                far=100,
+                mount=self.robot.links_map["camera_link_top"],
+            ),
+        ]
