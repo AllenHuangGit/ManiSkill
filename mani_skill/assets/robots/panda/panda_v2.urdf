@@ -12,7 +12,7 @@
   <joint name="base_prismatic_x" type="prismatic">
     <parent link="fixed_base"/>
     <child link="base_slide_x"/>
-    <origin xyz="0 0 0.01" rpy="0 0 0"/> <!-- Slightly above the fixed base for visualization -->
+    <origin xyz="0 0 0" rpy="0 0 0"/> <!-- Slightly above the fixed base for visualization -->
     <axis xyz="1 0 0"/>
     <limit lower="-10" upper="10" effort="1000" velocity="0"/>
     <dynamics damping="1000" friction="1000"/>

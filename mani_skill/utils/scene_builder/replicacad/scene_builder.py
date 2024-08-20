@@ -284,13 +284,13 @@ class ReplicaCADSceneBuilder(SceneBuilder):
             rest_keyframe = agent.keyframes["rest"]
             agent.reset(rest_keyframe.qpos)
 
-            agent.robot.set_pose(sapien.Pose([-1, 0, 0.02]))
+            agent.robot.set_pose(sapien.Pose([0, 0, 0]))
         elif self.env.robot_uids == "panda_v2":
             agent: PandaV2 = self.env.agent
             rest_keyframe = agent.keyframes["rest"]
             agent.reset(rest_keyframe.qpos)
 
-            agent.robot.set_pose(sapien.Pose([-1, 0, 0.02]))
+            agent.robot.set_pose(sapien.Pose([0, 0, 0]))
         else:
             raise NotImplementedError(self.env.robot_uids)
 
