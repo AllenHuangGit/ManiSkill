@@ -61,6 +61,10 @@ class PandaV2(BaseAgent):
     )
 
     arm_joint_names = [
+        "base_prismatic_x",
+        "base_prismatic_y",
+        "base_prismatic_z",
+        "base_revolute_z",
         "panda_joint1",
         "panda_joint2",
         "panda_joint3",
