@@ -13,6 +13,7 @@ import numpy as np
 import sapien
 import torch
 import transforms3d
+from transforms3d.euler import euler2quat
 
 from mani_skill import ASSET_DIR
 from mani_skill.agents.robots.fetch import (
@@ -22,6 +23,8 @@ from mani_skill.agents.robots.fetch import (
 )
 from mani_skill.agents.robots.panda.panda import Panda
 from mani_skill.agents.robots.panda.panda_v2 import PandaV2
+from mani_skill.agents.robots.panda.dual_panda import Dual_Panda
+from mani_skill.agents.multi_agent import MultiAgent
 from mani_skill.utils.scene_builder import SceneBuilder
 from mani_skill.utils.scene_builder.registration import register_scene_builder
 from mani_skill.utils.structs import Actor, Articulation
@@ -287,6 +290,24 @@ class ReplicaCADSceneBuilder(SceneBuilder):
             agent.robot.set_pose(sapien.Pose([0, 0, 0]))
         elif self.env.robot_uids == "panda_v2":
             agent: PandaV2 = self.env.agent
+            rest_keyframe = agent.keyframes["rest"]
+            agent.reset(rest_keyframe.qpos)
+
+            agent.robot.set_pose(sapien.Pose([0, 0, 0]))
+        elif self.env.robot_uids == ("panda_v2", "panda_v2"):
+            agent: MultiAgent = self.env.agent
+            rest_keyframe = agent.agents[1].keyframes["rest"]
+            agent.agents[1].reset(rest_keyframe.qpos)
+            agent.agents[1].robot.set_pose(
+                sapien.Pose([0, 0.3, 0])
+            )
+            rest_keyframe = agent.agents[0].keyframes["rest"]
+            agent.agents[0].reset(rest_keyframe.qpos)
+            agent.agents[0].robot.set_pose(
+                sapien.Pose([0, -0.3, 0])
+            )
+        elif self.env.robot_uids == "dual_panda":
+            agent: Dual_Panda = self.env.agent
             rest_keyframe = agent.keyframes["rest"]
             agent.reset(rest_keyframe.qpos)
 
