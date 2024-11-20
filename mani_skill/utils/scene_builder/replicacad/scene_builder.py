@@ -24,6 +24,7 @@ from mani_skill.agents.robots.fetch import (
 from mani_skill.agents.robots.panda.panda import Panda
 from mani_skill.agents.robots.panda.panda_v2 import PandaV2
 from mani_skill.agents.robots.panda.dual_panda import Dual_Panda
+from mani_skill.agents.robots.panda.dual_panda_v2 import Dual_Panda_V2
 from mani_skill.agents.multi_agent import MultiAgent
 from mani_skill.utils.scene_builder import SceneBuilder
 from mani_skill.utils.scene_builder.registration import register_scene_builder
@@ -312,8 +313,16 @@ class ReplicaCADSceneBuilder(SceneBuilder):
             agent.reset(rest_keyframe.qpos)
 
             agent.robot.set_pose(sapien.Pose([0, 0, 0]))
+        elif self.env.robot_uids == "dual_panda_v2":
+            agent: Dual_Panda_V2 = self.env.agent
+            rest_keyframe = agent.keyframes["rest"]
+            agent.reset(rest_keyframe.qpos)
+
+            agent.robot.set_pose(sapien.Pose([0, 0, 0]))
         else:
-            raise NotImplementedError(self.env.robot_uids)
+            raise NotImplementedError(
+                f"Robot UID {self.env.robot_uids} not supported for ReplicaCAD"
+            )
 
         for obj, pose in self._default_object_poses:
             obj.set_pose(pose)

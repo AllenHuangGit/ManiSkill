@@ -18,9 +18,9 @@ from mani_skill.sensors.camera import CameraConfig
 
 
 @register_agent()
-class Dual_Panda(BaseAgent):
-    uid = "dual_panda"
-    urdf_path = f"{PACKAGE_ASSET_DIR}/robots/panda/dual_panda.urdf"
+class Dual_Panda_V2(BaseAgent):
+    uid = "dual_panda_v2"
+    urdf_path = f"{PACKAGE_ASSET_DIR}/robots/panda/dual_panda_v2.urdf"
     urdf_config = dict(
         _materials=dict(
             gripper=dict(static_friction=2.0, dynamic_friction=2.0, restitution=0.0)
@@ -39,14 +39,8 @@ class Dual_Panda(BaseAgent):
         rest=Keyframe(
             qpos=np.array(
                 [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0, # base_revolute_z
                     0.0, # panda_joint1_1
-                    1.0, # camera_link_joint
                     0.0, # panda_joint1_2
-                    1.0, # camera_link_joint_2
                     np.pi / 8, # panda_joint2_1
                     np.pi / 8, # panda_joint2_2
                     0.0, # panda_joint3_1
@@ -70,10 +64,6 @@ class Dual_Panda(BaseAgent):
     )
 
     arm_joint_names = [
-        "base_prismatic_x",
-        "base_prismatic_y",
-        "base_prismatic_z",
-        "base_revolute_z",
         "panda_joint1_1",
         "panda_joint1_2",
         "panda_joint2_1",
@@ -340,106 +330,4 @@ class Dual_Panda(BaseAgent):
 
     @property
     def _sensor_configs(self):
-        return [
-            CameraConfig(
-                uid="panda_camera_front",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_front"],
-            ),
-            CameraConfig(
-                uid="panda_camera_back",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_back"],
-            ),
-            CameraConfig(
-                uid="panda_camera_left",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_left"],
-            ),
-            CameraConfig(
-                uid="panda_camera_right",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_right"],
-            ),
-            CameraConfig(
-                uid="panda_camera_top",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_top"],
-            ),
-            CameraConfig(
-                uid="panda_camera_front_2",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_front_2"],
-            ),
-            CameraConfig(
-                uid="panda_camera_back_2",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_back_2"],
-            ),
-            CameraConfig(
-                uid="panda_camera_left_2",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_left_2"],
-            ),
-            CameraConfig(
-                uid="panda_camera_right_2",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_right_2"],
-            ),
-            CameraConfig(
-                uid="panda_camera_top_2",
-                pose=Pose(p=[0, 0, 0], q=[1, 0, 0, 0]),  # Looking forward
-                width=512,
-                height=512,
-                fov=np.pi * 2 / 3,  # 120 degrees FOV
-                near=0.01,
-                far=100,
-                mount=self.robot.links_map["camera_link_top_2"],
-            ),
-            
-        ]
+        return []

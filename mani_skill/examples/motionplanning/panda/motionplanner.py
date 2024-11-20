@@ -67,18 +67,35 @@ class PandaArmMotionPlanningSolver:
             self.base_env.render_human()
 
     def setup_planner(self):
-        link_names = [link.get_name() for link in self.robot.get_links()]
-        joint_names = [joint.get_name() for joint in self.robot.get_active_joints()]
-        planner = mplib.Planner(
-            urdf=self.env_agent.urdf_path,
-            srdf=self.env_agent.urdf_path.replace(".urdf", ".srdf"),
-            user_link_names=link_names,
-            user_joint_names=joint_names,
-            move_group="panda_hand_tcp",
-            joint_vel_limits=np.ones(7) * self.joint_vel_limits,
-            joint_acc_limits=np.ones(7) * self.joint_acc_limits,
-        )
-        planner.set_base_pose(np.hstack([self.base_pose.p, self.base_pose.q]))
+        if self.robot.name == "panda":
+            link_names = [link.get_name() for link in self.robot.get_links()]
+            joint_names = [joint.get_name() for joint in self.robot.get_active_joints()]
+            planner = mplib.Planner(
+                urdf=self.env_agent.urdf_path,
+                srdf=self.env_agent.urdf_path.replace(".urdf", ".srdf"),
+                user_link_names=link_names,
+                user_joint_names=joint_names,
+                move_group="panda_hand_tcp",
+                joint_vel_limits=np.ones(7) * self.joint_vel_limits,
+                joint_acc_limits=np.ones(7) * self.joint_acc_limits,
+            )
+            planner.set_base_pose(self.base_pose)
+        elif self.robot.name == "dual_panda_v2":
+            link_names = [link.get_name() for link in self.robot.get_links() if link.get_name().startswith("panda")]
+            joint_names = [joint.get_name() for joint in self.robot.get_active_joints()]
+            planner = mplib.Planner(
+                urdf=self.env_agent.urdf_path,
+                srdf=self.env_agent.urdf_path.replace(".urdf", ".srdf"),
+                user_link_names=link_names,
+                user_joint_names=joint_names,
+                move_group=["panda_hand_tcp_1", "panda_hand_tcp_2"],
+                joint_vel_limits=np.ones(14) * self.joint_vel_limits,
+                joint_acc_limits=np.ones(14) * self.joint_acc_limits,
+            )
+            planner.set_base_pose(self.base_pose)
+        else:
+            raise NotImplementedError(f"Robot {self.robot.name} is not supported")
+        
         return planner
 
     def follow_path(self, result, refine_steps: int = 0):
