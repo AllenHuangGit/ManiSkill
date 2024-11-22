@@ -1,3 +1,8 @@
+'''
+This file defines the Dual_Panda agent, which is a two-armed version of the Panda agent.
+This configuration contains a moveable base and two camera above the base.
+'''
+
 from copy import deepcopy
 from typing import Dict, Tuple
 

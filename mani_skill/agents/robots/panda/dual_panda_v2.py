@@ -1,3 +1,7 @@
+'''
+This is a simply dual arm version without any additional features.
+'''
+
 from copy import deepcopy
 from typing import Dict, Tuple
 
