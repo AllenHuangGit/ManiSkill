@@ -68,6 +68,33 @@ class Fetch(BaseAgent):
 
     @property
     def _sensor_configs(self):
+        # Let the camera look down a bit
+        theta = np.pi / 6
+        q_down = np.array([np.cos(theta / 2), 0, np.sin(theta / 2), 0])
+
+        # Quaternion for four directions
+        q_front = np.array([1, 0, 0, 0])
+        q_left = np.array([np.cos(np.pi / 4), 0, 0, np.sin(np.pi / 4)])
+        q_right = np.array([np.cos(-np.pi / 4), 0, 0, np.sin(-np.pi / 4)])
+        q_back = np.array([0, 0, 0, 1])
+
+        def quaternion_multiply(q1, q2):
+            w1, x1, y1, z1 = q1
+            w2, x2, y2, z2 = q2
+            w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+            x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+            y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+            z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+            return np.array([w, x, y, z])
+        
+        def normalize(v):
+            return v / np.linalg.norm(v)
+        
+        q_front_down = normalize(quaternion_multiply(q_front, q_down))
+        q_left_down = normalize(quaternion_multiply(q_left, q_down))
+        q_right_down = normalize(quaternion_multiply(q_right, q_down))
+        q_back_down = normalize(quaternion_multiply(q_back, q_down))
+
         return [
             CameraConfig(
                 uid="fetch_head",
@@ -88,6 +115,50 @@ class Fetch(BaseAgent):
                 near=0.01,
                 far=100,
                 entity_uid="gripper_link",
+            ),
+            # Camera for the front view
+            CameraConfig(
+                uid="fetch_front",
+                pose=Pose.create_from_pq([0, 0, 2], q_front_down),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,
+                near=0.01,
+                far=100,
+                entity_uid="base_link",
+            ),
+            # Camera for the left view
+            CameraConfig(
+                uid="fetch_left",
+                pose=Pose.create_from_pq([0, 0, 2], q_left_down),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,
+                near=0.01,
+                far=100,
+                entity_uid="base_link",
+            ),
+            # Camera for the right view
+            CameraConfig(
+                uid="fetch_right",
+                pose=Pose.create_from_pq([0, 0, 2], q_right_down),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,
+                near=0.01,
+                far=100,
+                entity_uid="base_link",
+            ),
+            # Camera for the back view
+            CameraConfig(
+                uid="fetch_back",
+                pose=Pose.create_from_pq([0, 0, 2], q_back_down),
+                width=512,
+                height=512,
+                fov=np.pi * 2 / 3,
+                near=0.01,
+                far=100,
+                entity_uid="base_link",
             ),
         ]
 

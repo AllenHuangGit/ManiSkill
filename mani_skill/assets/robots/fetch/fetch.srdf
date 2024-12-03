@@ -9,4 +9,35 @@
   <disable_collisions link1="l_gripper_finger_link" link2="r_gripper_finger_link" reason="Default"/>
   <disable_collisions link1="upperarm_roll_link" link2="head_pan_link" reason="Default"/>
   <disable_collisions link1="upperarm_roll_link" link2="head_tilt_link" reason="Default"/>
+  
+  <!-- Disable collisions between adjacent links -->
+  <disable_collisions link1="root" link2="root_arm_1_link_1" reason="AdjacentLink"/>
+  <disable_collisions link1="root_arm_1_link_1" link2="root_arm_1_link_2" reason="AdjacentLink"/>
+  <disable_collisions link1="root_arm_1_link_2" link2="base_link" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="r_wheel_link" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="l_wheel_link" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="torso_lift_link" reason="AdjacentLink"/>
+  <disable_collisions link1="torso_lift_link" link2="head_pan_link" reason="AdjacentLink"/>
+  <disable_collisions link1="head_pan_link" link2="head_tilt_link" reason="AdjacentLink"/>
+  <disable_collisions link1="torso_lift_link" link2="shoulder_pan_link" reason="AdjacentLink"/>
+  <disable_collisions link1="shoulder_pan_link" link2="shoulder_lift_link" reason="AdjacentLink"/>
+  <disable_collisions link1="shoulder_lift_link" link2="upperarm_roll_link" reason="AdjacentLink"/>
+  <disable_collisions link1="upperarm_roll_link" link2="elbow_flex_link" reason="AdjacentLink"/>
+  <disable_collisions link1="elbow_flex_link" link2="forearm_roll_link" reason="AdjacentLink"/>
+  <disable_collisions link1="forearm_roll_link" link2="wrist_flex_link" reason="AdjacentLink"/>
+  <disable_collisions link1="wrist_flex_link" link2="wrist_roll_link" reason="AdjacentLink"/>
+  <disable_collisions link1="wrist_roll_link" link2="gripper_link" reason="AdjacentLink"/>
+  <disable_collisions link1="gripper_link" link2="r_gripper_finger_link" reason="AdjacentLink"/>
+  <disable_collisions link1="gripper_link" link2="l_gripper_finger_link" reason="AdjacentLink"/>
+  <disable_collisions link1="torso_lift_link" link2="bellows_link" reason="AdjacentLink"/>
+  <disable_collisions link1="torso_lift_link" link2="bellows_link2" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="estop_link" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="laser_link" reason="AdjacentLink"/>
+  <disable_collisions link1="base_link" link2="torso_fixed_link" reason="AdjacentLink"/>
+  <disable_collisions link1="head_tilt_link" link2="head_camera_link" reason="AdjacentLink"/>
+  <disable_collisions link1="head_camera_link" link2="head_camera_rgb_frame" reason="AdjacentLink"/>
+  <disable_collisions link1="head_camera_rgb_frame" link2="head_camera_rgb_optical_frame" reason="AdjacentLink"/>
+  <disable_collisions link1="head_camera_link" link2="head_camera_depth_frame" reason="AdjacentLink"/>
+  <disable_collisions link1="head_camera_depth_frame" link2="head_camera_depth_optical_frame" reason="AdjacentLink"/>
+  
 </robot>
